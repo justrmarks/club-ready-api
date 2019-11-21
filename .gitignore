@@ -1,0 +1,7 @@
+secrets
+tmp
+storage
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
