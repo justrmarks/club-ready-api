@@ -5,6 +5,6 @@ class UserSerializer
 
   attribute :email, if: Proc.new { |user, params|
     user.role == 'organizer'
-  }
-end
+ }
+
 end

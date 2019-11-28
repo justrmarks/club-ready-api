@@ -3,8 +3,8 @@ class SessionsController < Devise::SessionsController
   
     private
   
-    def respond_with(resource, _opts = {})
-      render json: resource
+    def respond_with(user, _opts = {})
+      render json: {user:user}
     end
   
     def respond_to_on_destroy

@@ -56,5 +56,23 @@ class GoogleCalendarWrapper
         @client.delete_event(@calendar_id, deleted_event.google_id)
     end
 
+    def seed_events
+        result = @client.list_events(@calendar_id)
+        result.items.each do |g_event|
+            Event.create({
+                google_id: g_event.id,
+                google_link: g_event.html_link,
+                title: g_event.summary,
+                description: g_event.description,
+                location: g_event.location,
+                start_time: g_event.start.date_time,
+                end_time: g_event.end.date_time,
+                host: User.find_by({email: 'seed@groove.cafe'})
+            })
+
+        end
+
+    end
+
 
 end

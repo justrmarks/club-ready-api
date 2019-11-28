@@ -5,3 +5,12 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+Event.destroy_all
+User.destroy_all
+
+User.create(email:"seed@groove.cafe",name: "user account for seeding db", password:"12345", role: 1, aboutme:"just for development, delete if found")
+
+client = GoogleCalendarWrapper.new
+
+client.seed_events
