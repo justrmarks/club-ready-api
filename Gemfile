@@ -50,3 +50,5 @@ gem 'devise-jwt'
 gem 'google-api-client'
 
 gem 'fast_jsonapi'
+
+gem 'faker'

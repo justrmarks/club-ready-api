@@ -1,14 +1,17 @@
 require 'concerns/google_calendar_wrapper'
 
 class Event < ApplicationRecord
-    enum bathrooms?: [:no_bathrooms, :portos, :single_stalls, :gendered_bathrooms, :unisex_bathrooms]
-    enum water?: [:no_water, :water_from_sinks, :water_for_sale, :free_water]
-    enum mobility?: [:not_wheelchair_accessible, :some_stairs, :not_wheelchair_accessible]
+    enum bathrooms: [:no_bathrooms, :portos, :single_stalls, :gendered_bathrooms, :all_gender]
+    enum water: [:no_water, :water_for_sale, :free_water]
+    enum mobility: [:inaccessible, :partially_accessible, :wheelchair_accessible]
     # associations
     belongs_to :host, class_name: "User", foreign_key: "host_id"
     has_many :attendings
     has_many :attendees, through: :attendings
+    has_many :comments
 
+    # activeStorage methods
+    has_one_attached :picture_file
 
     # lifecycle hooks
     before_create :create_google_event

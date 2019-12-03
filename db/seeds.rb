@@ -9,8 +9,20 @@
 Event.destroy_all
 User.destroy_all
 
-User.create(email:"seed@groove.cafe",name: "user account for seeding db", password:"12345", role: 1, aboutme:"just for development, delete if found")
+user = User.create(email:"seed@groove.cafe",name: "user account for seeding db", password:"12345", role: 1, aboutme:"just for development, delete if found")
 
-client = GoogleCalendarWrapper.new
+50.times do |i|
+    time = Time.now + rand(i).days
+    event = Event.create(title: "Event #{i}", host: user, description: "This is a test event", location: "my house", start_time: time, end_time: time + 2.hours, bathrooms: 0, water: 0, mobility: 0, flashing_lights: true)
 
-client.seed_events
+    if ([true,false].sample) 
+        event.attendees << user
+    end
+    
+    5.times do |i|
+        event.comments.build(user: user, body: "This is comment number #{i}")
+    end
+end
+
+
+

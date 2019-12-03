@@ -58,8 +58,10 @@ class GoogleCalendarWrapper
 
     def seed_events
         result = @client.list_events(@calendar_id)
+        puts result.items
         result.items.each do |g_event|
-            Event.create({
+            
+            event = Event.new({
                 google_id: g_event.id,
                 google_link: g_event.html_link,
                 title: g_event.summary,
@@ -67,8 +69,21 @@ class GoogleCalendarWrapper
                 location: g_event.location,
                 start_time: g_event.start.date_time,
                 end_time: g_event.end.date_time,
-                host: User.find_by({email: 'seed@groove.cafe'})
+                host: User.find_by({email: 'seed@groove.cafe'}),
+                bathrooms: 0,
+                water: 0,
+                flashing_lights: true,
+                mobility: 0
             })
+            puts event
+
+            if event.save
+                puts event
+            else
+                puts event.errors.full_messages
+            end
+
+
 
         end
 
