@@ -8,8 +8,8 @@ class EventSerializer
     event.host
   end
 
- attribute :image_src do |event|
-  event.picture_file.attached? ? url_for(event.picture_file) : false
+ attribute :image_src do |event, params|
+  event.picture_file.attached? ? params[:img_url] : false
  end
 
  attribute :accessability do |event|
@@ -27,5 +27,9 @@ class EventSerializer
       false
     end
  }
+
+ attribute :comments do |event|
+  event.comments.order('comments.created_at DESC')[0..5]
+ end
   
 end

@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
+
+
+
+  get '/events/hosting', to: 'events#hosting'
+  get '/events/attending', to: 'events#attending'
+
   resources :events
   resources :attendings
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  resources :comments
 
   devise_for :users,
   path: '',
@@ -17,6 +23,8 @@ Rails.application.routes.draw do
 
   get '/users', to: 'users#index'
   get '/auth', to: 'users#auth'
+
+  
 
 
 

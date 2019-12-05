@@ -9,14 +9,14 @@ class EventsController < ApplicationController
             event.start_time.month < select_month + 2 || event.start_time.month > select_month - 2  
         end
 
-        send_events = events.map {|event| EventSerializer.new(event, {params: {current_user: current_user}})}
+        send_events = events.map {|event| EventSerializer.new(event, (event_serializer_params(event)))}
         render json: {events: send_events}, status: :ok
     end
 
     def show
         event = Event.find_by(id: params[:id])
         if (event)
-            render json: {comments: event.comments, event: EventSerializer.new(event, {params: {current_user: current_user}})}
+            render json: {comments: event.comments, event: EventSerializer.new(event, (event_serializer_params(event)))}
         else
             render json: {message: "Event not found"}, status: 404
         end
@@ -24,9 +24,10 @@ class EventsController < ApplicationController
 
     def create
         if current_user.organizer? || current_user.admin?
-            event = Event.create(event_params)
-            if event.valid? 
-                render json: {message: "Event created", event: EventSerializer.new(event, {params: {current_user: current_user}})}
+            event = Event.new(event_params)
+            event.host = current_user
+            if event.save 
+                render json: {message: "Event created", event: EventSerializer.new(event, (event_serializer_params(event)))}
             else
                 render json: {message: "Error creating event", error: event.errors.full_messages}
             end
@@ -37,15 +38,13 @@ class EventsController < ApplicationController
 
     def attending
         events = Event.all.select { |event| event.attendees.includes?(current_user) }
-        
-        send_events = events.map {|event| EventSerializer.new(event, {params: {current_user: current_user}})}
+        send_events = events.map {|event| EventSerializer.new(event, (event_serializer_params(event)))}
         render json: {events: send_events}, status: :ok
     end
 
     def hosting
-        events = Event.all.select { |event| event.host.id == current_user.id }
-        
-        send_events = events.map {|event| EventSerializer.new(event, {params: {current_user: current_user}})}
+        events = Event.all.select { |event| event.host.id == current_user.id }.sort {|a,b| a.start_time <=> b.start_time }
+        send_events = events.map {|event| EventSerializer.new(event, (event_serializer_params(event)))}
         render json: {events: send_events}, status: :ok
     end
 
@@ -57,6 +56,18 @@ class EventsController < ApplicationController
         params.require(:event).permit(:title, :description, :start_time, :end_time, 
             :location, :bathrooms, :water, :mobility, :flashing_lights, :picture_file)
     end
+
+    def event_serializer_params(event)
+        result = {params: {current_user: current_user}}
+        if event.picture_file.attached?
+            result[:params][:img_url] = url_for(event.picture_file)
+            puts "********event serializer params*******", result
+        end
+        
+        result
+        
+    end
+
 end
 
 
