@@ -15,9 +15,6 @@ class GoogleCalendarWrapper
     end
 
     def create_event(new_event)
-        puts "*****new_event start*******", new_event.start_time
-        puts "*****new_event end*******", new_event.end_time
-
 
         event = Google::Apis::CalendarV3::Event.new({summary: new_event.title,
             location: new_event.location,

@@ -16,7 +16,8 @@ class EventsController < ApplicationController
     def show
         event = Event.find_by(id: params[:id])
         if (event)
-            render json: {comments: event.comments, event: EventSerializer.new(event, (event_serializer_params(event)))}
+            comments = event.comments.map {|comment| CommentSerializer.new(comment) }
+            render json: {comments: comments, event: EventSerializer.new(event, (event_serializer_params(event)))}
         else
             render json: {message: "Event not found"}, status: 404
         end
@@ -37,7 +38,7 @@ class EventsController < ApplicationController
     end
 
     def attending
-        events = Event.all.select { |event| event.attendees.includes?(current_user) }
+        events = Event.all.select { |event| event.attendees.include?(current_user) }
         send_events = events.map {|event| EventSerializer.new(event, (event_serializer_params(event)))}
         render json: {events: send_events}, status: :ok
     end
@@ -61,7 +62,6 @@ class EventsController < ApplicationController
         result = {params: {current_user: current_user}}
         if event.picture_file.attached?
             result[:params][:img_url] = url_for(event.picture_file)
-            puts "********event serializer params*******", result
         end
         
         result

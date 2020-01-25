@@ -12,7 +12,7 @@ class EventSerializer
   event.picture_file.attached? ? params[:img_url] : false
  end
 
- attribute :accessability do |event|
+ attribute :accessibility do |event|
   {water: event.water, mobility: event.mobility, flashing_lights: event.flashing_lights, bathrooms: event.bathrooms}
  end
 
@@ -29,7 +29,7 @@ class EventSerializer
  }
 
  attribute :comments do |event|
-  event.comments.order('comments.created_at DESC')[0..5]
+  event.comments
  end
   
 end
