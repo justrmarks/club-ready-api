@@ -1,6 +1,7 @@
 FROM ruby:2.6.1
 
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
+RUN gem install bundler -v 2.0.1
 
 RUN mkdir /ClubReady
 WORKDIR /ClubReady
