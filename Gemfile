@@ -52,3 +52,5 @@ gem 'google-api-client'
 gem 'fast_jsonapi'
 
 gem 'faker'
+
+gem "aws-sdk-s3", require: false

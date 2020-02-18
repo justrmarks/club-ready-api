@@ -5,3 +5,4 @@ storage
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+/config/master.key
