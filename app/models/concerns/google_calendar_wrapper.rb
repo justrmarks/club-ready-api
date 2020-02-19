@@ -5,11 +5,9 @@ require 'stringio'
 class GoogleCalendarWrapper
    
     def initialize
-        sio = StringIO.new
-        sio.print(ENV['google_secrets'])
         scopes = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.events']
         authorizer = Google::Auth::ServiceAccountCredentials.make_creds(
-        json_key_io: sio, #File.open('/Users/shedaddy/Development/Groove_Cafe_capstone/project-sploopy-api/secrets/project-sploopy-d9c223115cef.json'),
+        json_key_io: StringIO.new(ENV['google_secrets'], #File.open('/Users/shedaddy/Development/Groove_Cafe_capstone/project-sploopy-api/secrets/project-sploopy-d9c223115cef.json'),
         scope: scopes)
         authorizer.fetch_access_token!
         @client = Google::Apis::CalendarV3::CalendarService.new
