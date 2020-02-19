@@ -6,3 +6,4 @@ storage
 !/log/.keep
 !/tmp/.keep
 /config/master.key
+/config/master.key
