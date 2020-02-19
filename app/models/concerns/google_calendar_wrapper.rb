@@ -4,9 +4,10 @@ require 'googleauth'
 class GoogleCalendarWrapper
    
     def initialize
+        json = Rails.application.credentials.dig(:google, :secret_json)
         scopes = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.events']
         authorizer = Google::Auth::ServiceAccountCredentials.make_creds(
-        json_key_io: File.open('/Users/shedaddy/Development/Groove_Cafe_capstone/project-sploopy-api/secrets/project-sploopy-d9c223115cef.json'),
+        json_key_io: json,
         scope: scopes)
         authorizer.fetch_access_token!
         @client = Google::Apis::CalendarV3::CalendarService.new

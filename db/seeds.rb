@@ -10,6 +10,7 @@ Event.destroy_all
 User.destroy_all
 
 user = User.create(email:"seed@groove.cafe",name: "user account for seeding db", password:"12345", role: 1, aboutme:"just for development, delete if found")
+admin = User.create(email:"admin@example.com",name: "user account for seeding db", password:"admin", role: 2, aboutme:"admin account for playing")
 
 50.times do |i|
     time = Time.now + rand(i).days
